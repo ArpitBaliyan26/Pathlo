@@ -94,16 +94,12 @@ export default function CollegeDetailPage({ user, showToast }) {
   const { isCollegeSaved, toggleSave } = useSavedColleges();
   const saved = isCollegeSaved(id);
   const [expandedExamId, setExpandedExamId] = useState('');
-  const [insight, setInsight] = useState(null);
-  const [insightLoading, setInsightLoading] = useState(false);
   const fetchedInsightFor = useRef('');
 
 
 
   const college = colleges.find((entry) => entry.id === id);
   const detail = getCollegeDetail(id);
-  const courses = college?.courses || college?.coursesOffered || [];
-  const reviews = detail?.reviews || [];
   const officialWebsite = detail?.officialWebsite || college?.officialWebsite || '';
   const collegeExams = (detail?.entryExams || college?.entryExams || []).map((examName) => {
     const normalizedName = examName.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -129,24 +125,24 @@ export default function CollegeDetailPage({ user, showToast }) {
     if (!college || fetchedInsightFor.current === id) return;
 
     fetchedInsightFor.current = id;
-    setInsightLoading(true);
-    setInsight(null);
+    // setInsightLoading(true);
+    // setInsight(null);
 
     generateCollegeInsight(college)
-      .then((text) => {
-        setInsight(text);
-        setInsightLoading(false);
+      .then(() => {
+        // setInsight(text);
+        // setInsightLoading(false);
       })
       .catch((error) => {
         console.error('[CollegeDetail] Insight error:', error);
-        setInsight('AI insight not available right now');
-        setInsightLoading(false);
+        // setInsight('AI insight not available right now');
+        // setInsightLoading(false);
       });
   }, [college, id]);
 
   if (!college) return <NotFound />;
 
-  const { name, location, type, tags, image, shortName, rating, annualFees, avgPackage } = college;
+  const { name, location, type, tags, rating, annualFees, avgPackage } = college;
   const gradients = [
     'from-blue-500 via-indigo-600 to-purple-700',
     'from-purple-500 via-pink-500 to-rose-600',

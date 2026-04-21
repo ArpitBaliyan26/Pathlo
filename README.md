@@ -1,82 +1,170 @@
-# Pathlo Data Notes
+# 🚀 Pathlo – Find Your Right Path
 
-## Dataset Scope
+Pathlo is a modern college and career discovery platform designed for Indian students to explore **real education pathways** beyond just rankings.
 
-Pathlo is a college discovery platform for modern Indian students.
+---
 
-The college dataset intentionally includes all of the following categories:
+## 🎯 Vision
 
-- Traditional colleges and engineering institutions such as IITs, NITs, BITS, IIITs, and major private universities
-- Liberal arts and multidisciplinary universities such as Ashoka, FLAME, Krea, Ahmedabad University, and JGU
-- Business and management pathways such as Masters' Union, NMIMS, Symbiosis, SSCBS, and IIM IPM programs
-- New-age tech institutions such as Scaler, Newton School of Technology, Masai, Coding Ninjas, upGrad Campus, and NIIT University
-- Research-focused institutes such as IISc, IISERs, NISER, ISI, ICT, and TIFR
+Most platforms focus only on rankings.
 
-These categories are all product requirements, not temporary experiments.
+Pathlo focuses on:
+- Real career paths
+- Exploration before decision
+- Understanding student life, outcomes, and fit
 
-## Data Philosophy
+> “Not sure where to start? Explore paths, not just colleges.”
 
-- Keep real institutions across all intended categories
-- Remove only clearly fake or placeholder entries
-- Never shrink coverage by treating new-age or business institutions as invalid
-- If a field is not verified, leave it empty or hide it in the UI
-- Do not fabricate reviews, alumni, rankings, fee data, or placeholder college records
+---
 
-Rule of thumb:
+## 🧠 What Makes Pathlo Different
 
-> Prefer empty or hidden over fake.
+- Not a ranking-first platform
+- Includes:
+  - Engineering colleges
+  - Liberal arts universities
+  - Business schools
+  - New-age tech institutions
+  - Research institutes
+- Encourages exploration via:
+  - Campus life (YouTube)
+  - Student opinions (Google, Reddit, Quora)
 
-## Current Goal
+---
 
-- Maintain a restored dataset in the 40 to 60 college range
-- Keep category distribution balanced across tech, business, liberal arts, research, and new-age paths
-- Keep `src/data/colleges.js` as the source of truth for listing data
-- Keep `src/data/collegeDetails.js` synced to the same IDs and real institutions
+## ⚙️ Features
 
-## Data Files
+### 🔐 Authentication
+- Email/password auth using Supabase
+- Login / Signup flow
+- “Skip for now” option
+- Navbar updates based on session
 
-- `src/data/colleges.js` -> source dataset for college listings
-- `src/data/collegeDataset.js` -> normalized dataset used by listing and filter UI
-- `src/data/collegeDetails.js` -> detail-page data derived from the same college IDs
-- `src/data/examDataset.js` -> normalized exam dataset
+---
 
-## Guardrail
+### 🏫 College Discovery
+- Explore colleges across categories
+- Filters:
+  - Field (Engineering, Business, Liberal Arts, etc.)
+  - Type (Government, Private, etc.)
+- College cards include:
+  - Tags (max 3)
+  - Ratings (if available)
+  - Fees & placements (if available)
 
-New-age tech schools and business institutions are core to Pathlo.
+---
 
-They must not be removed again during future data cleanup unless the institution itself is clearly fake or no longer relevant to the product.
+### 📄 College Detail Page
+- Overview of college
+- Fees & average package (if available)
+- Entry via exams
+- External exploration:
+  - 🎥 YouTube (campus, fest, student life)
+  - 🌐 Google Reviews
+  - 💬 Reddit discussions
+  - ❓ Quora discussions
 
-## UI & Behavior Guardrails
+---
 
-- Do not redesign UI layouts unless explicitly asked
-- Do not change routing structure (e.g., /colleges/:id)
-- Do not rename or restructure major components (Navbar, CollegeCard, AuthPage, etc.)
-- Do not introduce duplicate sections or repeated headings
-- Do not auto-add placeholder text like "Information not available"
+### 📝 Exam Explorer
+- Major Indian entrance exams:
+  - JEE, NEET, CUET, CAT, etc.
+- Includes:
+  - Difficulty level
+  - Field mapping
+  - Duration & marks
 
-### Navigation Rules
+---
 
-- College pages must open smoothly at top without scroll jump
-- Exam clicks should not redirect to a different page unless explicitly required
-- External links (YouTube, Google, Reddit, Quora) should open search queries, not hardcoded fake links
+### ⭐ UX Improvements
+- Smooth navigation (no scroll jump)
+- Clean UI (light + dark mode)
+- Consistent wording:
+  - Log in / Sign up / Log out
+- Navbar shows username instead of full email
 
-### Auth Rules
+---
 
-- Auth uses Supabase email/password
-- Do not modify auth logic unless explicitly requested
-- UI should show clear messages (e.g., email verification required)
+## 🗂️ Project Structure
 
-### Display Rules
 
-- Show only verified data
-- If data is missing → hide section instead of showing placeholder text
-- Limit tags per college card (max 3–5)
-- Use icons instead of redundant text where possible
+src/
+components/
+pages/
+data/
+colleges.js
+collegeDetails.js
+examDataset.js
 
-### Data Integrity Rules
 
-- Do not replace entire dataset
-- Only add or update entries
-- Maintain ID consistency between:
-  - colleges.js
-  - collegeDetails.js
+---
+
+## 📊 Data Philosophy
+
+- Real institutions only
+- No fake data
+- If data is missing → hidden
+- Balanced dataset across categories
+
+> “Prefer empty over fake”
+
+---
+
+## 🚧 Current Status
+
+- Core UI & UX completed
+- Auth working (email verification required)
+- Dataset partially complete
+- “My Path” (saved colleges) under development
+
+---
+
+## 🔮 Future Improvements
+
+- Personalized recommendations
+- AI-based college insights
+- User profiles & saved data
+- Verified student reviews
+- Expanded dataset (100+ colleges)
+
+---
+
+## 🛠️ Tech Stack
+
+- React.js
+- Vite
+- Tailwind CSS
+- Supabase (Authentication & Backend)
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- npm
+
+### Installation
+
+1. Clone the repo
+```sh
+git clone https://github.com/your_username/pathlo.git
+Install dependencies
+npm install
+Create .env file
+VITE_SUPABASE_URL=YOUR_SUPABASE_URL
+VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+Run the app
+npm run dev
+
+App runs on:
+👉 http://localhost:5173
+
+⚠️ Notes
+Data shown is indicative
+Always verify with official sources
+Do not expose .env keys publicly
+🧑‍💻 Author
+
+Built by Arpit Baliyan
+Vision: Redefining how students explore careers 🚀
