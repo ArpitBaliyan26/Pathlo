@@ -25,15 +25,15 @@ export default {
         },
         surface: {
           DEFAULT: '#ffffff',
-          dark: '#0f1117',
+          dark: '#0f172a',
         },
         card: {
-          DEFAULT: '#f8f9fc',
-          dark: '#1a1d27',
+          DEFAULT: '#ffffff',
+          dark: '#1e293b',
         },
         border: {
           DEFAULT: '#e2e8f0',
-          dark: '#252836',
+          dark: '#334155',
         },
       },
       spacing: {
@@ -45,9 +45,9 @@ export default {
         xl3: '1.5rem',
       },
       boxShadow: {
-        card: '0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04)',
-        'card-hover': '0 4px 20px rgba(0,0,0,0.1)',
-        'brand': '0 4px 20px rgba(124,58,237,0.25)',
+        sm: '0 1px 2px rgba(0,0,0,0.05)',
+        md: '0 4px 12px rgba(0,0,0,0.08)',
+        lg: '0 4px 16px rgba(0,0,0,0.4)',
       },
     },
   },

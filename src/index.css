@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply bg-white dark:bg-[#0f1117] text-slate-700 dark:text-slate-300 font-sans antialiased;
+    @apply bg-[#f8f5f0] dark:bg-[#0f172a] text-slate-800 dark:text-gray-200 font-sans antialiased;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
@@ -28,23 +28,23 @@
 @layer components {
   /* Navbar glass effect */
   .navbar-glass {
-    @apply bg-white/80 dark:bg-[#0f1117]/80 backdrop-blur-md border-b border-slate-200/60 dark:border-white/[0.06];
+    @apply bg-white/90 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/30;
   }
 
   /* Card base */
   .card {
-    @apply bg-white dark:bg-[#1a1d27] rounded-xl border border-slate-200 dark:border-[#252836] shadow-card;
+    @apply bg-white dark:bg-[#1e293b] rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   .card:hover {
-    @apply shadow-card-hover;
-    transform: translateY(-1px);
+    @apply shadow-md;
+    transform: translateY(-1px) scale(1.01);
   }
 
   /* Primary button */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-medium text-sm shadow-brand transition-all duration-150;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-medium text-sm shadow-sm hover:shadow-md transition-all duration-150;
   }
 
   /* Ghost button */
@@ -59,16 +59,35 @@
 
   /* Nav link */
   .nav-link {
-    @apply flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.06] transition-all duration-150;
+    @apply flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-all duration-150;
   }
 
   .nav-link.active {
-    @apply text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/10;
+    @apply text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-500/15;
   }
 
   /* Section label */
   .section-label {
     @apply text-xs font-semibold uppercase tracking-widest text-brand-500 dark:text-brand-400;
+  }
+
+  /* Input fields */
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="search"],
+  textarea,
+  select {
+    @apply bg-white dark:bg-[#1e293b] border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100;
+  }
+
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="text"]:focus,
+  input[type="search"]:focus,
+  textarea:focus,
+  select:focus {
+    @apply border-brand-500 dark:border-brand-500 ring-2 ring-brand-500/20;
   }
 }
 

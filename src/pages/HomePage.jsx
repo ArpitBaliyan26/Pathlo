@@ -1,6 +1,19 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import CollegeCard from '../components/ui/CollegeCard';
-import { colleges, categories, stats } from '../data/colleges';
+import colleges, { categories } from '../data/collegeDataset';
+import exams from '../data/examDataset';
+
+function shuffleArray(items) {
+  const next = [...items];
+
+  for (let index = next.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [next[index], next[swapIndex]] = [next[swapIndex], next[index]];
+  }
+
+  return next;
+}
 
 /* ─── Sub-component: Section header ─────────────────────────── */
 function SectionHeader({ eyebrow, title, subtitle, action }) {
@@ -76,8 +89,9 @@ function CategoryCard({ category }) {
 }
 
 /* ─── Main: HomePage ─────────────────────────────────────────── */
-export default function HomePage() {
-  const featuredColleges = colleges.filter((c) => c.featured);
+export default function HomePage({ user, showToast }) {
+  const featuredExams = exams.slice(0, 3);
+  const featuredColleges = useMemo(() => shuffleArray(colleges).slice(0, 3), []);
 
   return (
     <main className="flex-1">
@@ -108,16 +122,16 @@ export default function HomePage() {
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight
                          text-slate-900 dark:text-white leading-[1.1] text-balance mb-5">
-            Find the Right{' '}
-            <span className="text-brand-500 dark:text-brand-400">Path</span>{' '}
-            for Your Future
+            Discover Your{' '}
+            <span className="text-brand-500 dark:text-brand-400">Path</span>
+            , Your Way
           </h1>
 
           {/* Subtitle */}
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-500 dark:text-slate-400
                          leading-relaxed mb-8 text-balance">
-            Explore exams, colleges, and real outcomes — not just rankings.
-            Discover opportunities beyond JEE and NEET that match your strengths.
+            Pathlo is a discovery platform, not a ranking site.
+            Explore modern career paths in business, tech, and liberal arts.
           </p>
 
           {/* CTAs */}
@@ -140,39 +154,37 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* ── Stats bar ─────────────────────────────── */}
-          <div className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {stats.map((stat) => (
-              <div key={stat.label}
-                className="flex flex-col items-center gap-1 p-4 rounded-xl
-                           bg-white/70 dark:bg-white/[0.04]
-                           border border-slate-100 dark:border-white/[0.06]
-                           backdrop-blur-sm">
-                <span className="text-lg" role="img" aria-hidden>{stat.icon}</span>
-                <span className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                  {stat.value}
-                </span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">{stat.label}</span>
-              </div>
-            ))}
+          <div className="mt-14 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3 max-w-lg mx-auto text-xs text-slate-500 dark:text-slate-400">
+            <span className="flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 11.08-2-1.73-5.25-3.03-7.5-4.33-2.5 1.44 7.5 4.33 5.25 3.03 2 1.73z"/><path d="m22 11.08-7.5 4.33-5.25 3.03-2 1.73-2.5-1.44 2-1.73 5.25-3.03 7.5-4.33z"/><path d="M1.96 9.35 4.5 7.9l7.5 4.33 7.5 4.33 2.54 1.47-2.5 1.44-7.5-4.33-7.5-4.33Z"/></svg>
+              New-Age Tech Schools
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect x="2" y="20" width="20" height="2"/><path d="M12 12h0"/></svg>
+              Modern Business Schools
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 22c-2.66 0-5.08-1.04-6.88-2.78"/><path d="m15.78 15.78-3.56-3.56a2 2 0 0 1 0-2.82l3.56-3.56"/><path d="M12 22c2.66 0 5.08-1.04 6.88-2.78"/></svg>
+              Liberal Arts Universities
+            </span>
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════
-          RECOMMENDED COLLEGES
+          EXPLORE COLLEGES
           ════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <SectionHeader
-          eyebrow="✦ Recommended for You"
-          title="Top Colleges to Explore"
-          subtitle="Curated based on what students like you are exploring"
+          eyebrow="✦ Colleges"
+          title="Explore colleges across different fields and paths"
+          subtitle="Browse colleges by interest, location, and study path. Verified source data will continue to grow here."
           action={{ label: 'View all', href: '/colleges' }}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {featuredColleges.map((college) => (
-            <CollegeCard key={college.id} college={college} />
+            <CollegeCard key={college.id} college={college} user={user} showToast={showToast} />
           ))}
         </div>
       </section>
@@ -192,13 +204,13 @@ export default function HomePage() {
 
           <div className="relative z-10 text-center sm:text-left">
             <p className="text-white/70 text-xs font-medium uppercase tracking-widest mb-1.5">
-              ✦ Discover Your Path
+              ✦ Explore Further
             </p>
             <h2 className="text-white text-xl sm:text-2xl font-bold tracking-tight">
-              Not sure which college fits you?
+              Not sure where to start?
             </h2>
             <p className="text-white/75 text-sm mt-2 max-w-md">
-              Tell us your interests, preferred state, and career goals. We'll show the best-fit options tailored just for you.
+              Browse all colleges, apply filters by field or type, and learn what each path actually looks like — beyond the rankings.
             </p>
           </div>
 
@@ -210,7 +222,7 @@ export default function HomePage() {
                        hover:bg-brand-50 active:scale-[0.98]
                        transition-all duration-150"
           >
-            ✦ Refine for Me
+            Browse All Colleges
           </Link>
         </div>
       </section>
@@ -244,23 +256,19 @@ export default function HomePage() {
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[
-            { code: 'JE', name: 'JEE Main', body: 'NTA', difficulty: 'Hard', diffColor: 'text-red-500 bg-red-50 dark:bg-red-500/10', field: 'Engineering', freq: 'Twice a year (Jan & Apr)', date: 'Jan 2025 & Apr 2025', students: '12 Lakh+', desc: 'Gateway to NITs, IITs, and other top engineering colleges. Also qualifies for JEE Advanced.' },
-            { code: 'JA', name: 'JEE Advanced', body: 'IIT Council', difficulty: 'Hard', diffColor: 'text-red-500 bg-red-50 dark:bg-red-500/10', field: 'Engineering', freq: 'Once a year (May)', date: 'May 2025', students: '2.5 Lakh+', desc: 'The most prestigious engineering entrance exam in India, gateway to the IITs.' },
-            { code: 'CU', name: 'CUET', body: 'NTA', difficulty: 'Medium', diffColor: 'text-amber-500 bg-amber-50 dark:bg-amber-500/10', field: 'Liberal Arts / Science', freq: 'Once a year (May–Jun)', date: 'May–June 2025', students: '15 Lakh+', desc: 'Single entrance test for admission to 275+ central, state, and private universities across India.' },
-          ].map((exam) => (
-            <div key={exam.code}
-              className="card p-5 flex flex-col gap-3 group hover:border-brand-200 dark:hover:border-brand-500/30 transition-colors">
+          {featuredExams.map((exam) => (
+            <div key={exam.id}
+              className="card p-6 flex flex-col gap-3 group hover:border-brand-200 dark:hover:border-brand-500/30 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-brand-50 dark:bg-brand-500/10
                                   text-brand-600 dark:text-brand-400
                                   flex items-center justify-center text-xs font-bold">
-                    {exam.code}
+                    {exam.shortName?.slice(0, 2).toUpperCase() || exam.name.slice(0, 2).toUpperCase()}
                   </div>
                   <div>
                     <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-50">{exam.name}</h3>
-                    <p className="text-xs text-slate-400">{exam.body}</p>
+                    <p className="text-xs text-slate-400">{exam.conductingBody}</p>
                   </div>
                 </div>
                 <button aria-label="Save exam"
@@ -277,22 +285,24 @@ export default function HomePage() {
 
               {/* Badges */}
               <div className="flex flex-wrap gap-1.5">
-                <span className={`badge ${exam.diffColor} font-semibold`}>● {exam.difficulty}</span>
+                <span className={`badge ${exam.difficulty === 'Hard' ? 'text-red-500 bg-red-50 dark:bg-red-500/10' : exam.difficulty === 'Moderate' ? 'text-amber-500 bg-amber-50 dark:bg-amber-500/10' : 'text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10'} font-semibold`}>
+                  ● {exam.difficulty}
+                </span>
                 <span className="badge bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300">{exam.field}</span>
                 <span className="badge bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300 text-[10px]">
-                  {exam.freq}
+                  {exam.frequency}
                 </span>
               </div>
 
               {/* Date + students */}
               <div className="flex gap-4 text-xs text-slate-500 dark:text-slate-400">
-                <span>📅 {exam.date}</span>
-                <span>👤 {exam.students}</span>
+                <span>📅 {exam.nextDate}</span>
+                <span>👤 {exam.approxApplicants}</span>
               </div>
 
               {/* Desc */}
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">
-                {exam.desc}
+                {exam.description}
               </p>
 
               {/* Link */}

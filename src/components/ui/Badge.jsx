@@ -4,7 +4,7 @@
  */
 
 const variantStyles = {
-  default:    'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300',
+  default:    'bg-slate-100 text-slate-600 dark:bg-slate-800/50 dark:text-slate-300',
   tech:       'bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300',
   business:   'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
   liberal:    'bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300',
