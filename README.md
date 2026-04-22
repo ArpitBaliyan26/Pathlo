@@ -2,6 +2,8 @@
 
 Pathlo is a modern college and career discovery platform designed for Indian students to explore **real education pathways** beyond just rankings.
 
+> **UI patch (v0.3):** Fixed empty-state visuals, improved dark mode contrast, added exam bookmarking, improved routing (no 404 on refresh), cleaned misleading data usage.
+
 ---
 
 ## 🎯 Vision
@@ -9,9 +11,10 @@ Pathlo is a modern college and career discovery platform designed for Indian stu
 Most platforms focus only on rankings.
 
 Pathlo focuses on:
-- Real career paths
-- Exploration before decision
-- Understanding student life, outcomes, and fit
+
+* Real career paths
+* Exploration before decision
+* Understanding student life, outcomes, and fit
 
 > “Not sure where to start? Explore paths, not just colleges.”
 
@@ -19,152 +22,200 @@ Pathlo focuses on:
 
 ## 🧠 What Makes Pathlo Different
 
-- Not a ranking-first platform
-- Includes:
-  - Engineering colleges
-  - Liberal arts universities
-  - Business schools
-  - New-age tech institutions
-  - Research institutes
-- Encourages exploration via:
-  - Campus life (YouTube)
-  - Student opinions (Google, Reddit, Quora)
+* Not a ranking-first platform
+* Encourages **real-world exploration**:
+
+  * 🎥 YouTube (campus life)
+  * 🌐 Google Reviews
+  * 💬 Reddit
+  * ❓ Quora
+* Covers diverse paths:
+
+  * Engineering
+  * Liberal Arts
+  * Business
+  * Research
+  * New-age tech
 
 ---
 
 ## ⚙️ Features
 
 ### 🔐 Authentication
-- Email/password auth using Supabase
-- Login / Signup flow
-- “Skip for now” option
-- Navbar updates based on session
+
+* Supabase email/password auth
+* Session-based UI
+* Optional “Skip for now”
 
 ---
 
 ### 🏫 College Discovery
-- Explore colleges across categories
-- Filters:
-  - Field (Engineering, Business, Liberal Arts, etc.)
-  - Type (Government, Private, etc.)
-- College cards include:
-  - Tags (max 3)
-  - Ratings (if available)
-  - Fees & placements (if available)
+
+* Browse colleges across categories
+* Filters:
+
+  * Field (Engineering, Business, etc.)
+
+> ⚠️ Type filter intentionally minimized to avoid bias
+
+* College cards:
+
+  * Tags (max 3)
+  * Fees & placements (if available)
+  * Clean UI (no fake data)
 
 ---
 
 ### 📄 College Detail Page
-- Overview of college
-- Fees & average package (if available)
-- Entry via exams
-- External exploration:
-  - 🎥 YouTube (campus, fest, student life)
-  - 🌐 Google Reviews
-  - 💬 Reddit discussions
-  - ❓ Quora discussions
+
+* Overview
+* Entry exams
+* External exploration:
+
+  * YouTube
+  * Google
+  * Reddit
+  * Quora
 
 ---
 
 ### 📝 Exam Explorer
-- Major Indian entrance exams:
-  - JEE, NEET, CUET, CAT, etc.
-- Includes:
-  - Difficulty level
-  - Field mapping
-  - Duration & marks
+
+* Major exams:
+
+  * JEE, NEET, CUET, CAT, etc.
+* Includes:
+
+  * Difficulty
+  * Field mapping
+  * Duration, marks
+* ✅ Bookmark exams (local storage)
 
 ---
 
 ### ⭐ UX Improvements
-- Smooth navigation (no scroll jump)
-- Clean UI (light + dark mode)
-- Consistent wording:
-  - Log in / Sign up / Log out
-- Navbar shows username instead of full email
+
+* Smooth navigation
+* No scroll jump
+* No 404 on refresh (Vercel fix)
+* Dark + Light mode
+* Username display in navbar
 
 ---
 
 ## 🗂️ Project Structure
 
-
+```
 src/
-components/
-pages/
-data/
-colleges.js
-collegeDetails.js
-examDataset.js
-
+  components/
+    layout/
+    ui/
+  pages/
+  data/
+    colleges.js
+    collegeDetails.js
+    examDataset.js
+  hooks/
+    useSavedColleges.js
+    useSavedExams.js
+  services/
+  App.jsx
+  main.jsx
+```
 
 ---
 
-## 📊 Data Philosophy
+## 📊 Data Philosophy (STRICT)
 
-- Real institutions only
-- No fake data
-- If data is missing → hidden
-- Balanced dataset across categories
+* Real institutions only
+* ❌ No fabricated data
+* ⚠️ Some values are **indicative**, not exact
+* Missing data → hidden in UI
 
 > “Prefer empty over fake”
 
 ---
 
+## ⚠️ DATA DISCLAIMER
+
+* Fees & placements may be indicative ranges
+* Always verify from official sources
+* This is Version 1 — dataset is being improved continuously
+
+---
+
 ## 🚧 Current Status
 
-- Core UI & UX completed
-- Auth working (email verification required)
-- Dataset partially complete
-- “My Path” (saved colleges) under development
+* Core UI & UX completed
+* Auth working
+* Dataset partially verified
+* Bookmark system (colleges + exams) implemented
+* Routing stable (no refresh errors)
 
 ---
 
 ## 🔮 Future Improvements
 
-- Personalized recommendations
-- AI-based college insights
-- User profiles & saved data
-- Verified student reviews
-- Expanded dataset (100+ colleges)
+* AI-based recommendations
+* Verified student reviews
+* Expanded dataset (100+ colleges)
+* Backend persistence (Supabase)
 
 ---
 
 ## 🛠️ Tech Stack
 
-- React.js
-- Vite
-- Tailwind CSS
-- Supabase (Authentication & Backend)
+* React.js
+* Vite
+* Tailwind CSS
+* Supabase
 
 ---
 
 ## ⚙️ Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
-- npm
 
-### Installation
+* Node.js (v18+)
+* npm
 
-1. Clone the repo
-```sh
+### Setup
+
+```bash
 git clone https://github.com/your_username/pathlo.git
-Install dependencies
+cd pathlo
 npm install
-Create .env file
+```
+
+Create `.env`:
+
+```
 VITE_SUPABASE_URL=YOUR_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-Run the app
-npm run dev
+```
 
-App runs on:
+Run:
+
+```bash
+npm run dev
+```
+
+App:
 👉 http://localhost:5173
 
-⚠️ Notes
-Data shown is indicative
-Always verify with official sources
-Do not expose .env keys publicly
-🧑‍💻 Author
+---
+
+## 🚫 Guardrails (IMPORTANT FOR CONTRIBUTORS & AI)
+
+* Do NOT add fake ratings
+* Do NOT fabricate fees or placement data
+* Do NOT redesign UI without instruction
+* Do NOT modify authentication logic
+* Prefer hiding data over guessing
+
+---
+
+## 🧑‍💻 Author
 
 Built by Arpit Baliyan
 Vision: Redefining how students explore careers 🚀

@@ -1,4 +1,4 @@
-import colleges from './colleges.js';
+﻿import colleges from './colleges.js';
 
 const categoryMeta = {
   tech: {
@@ -36,8 +36,14 @@ const categoryMeta = {
     description: 'Industry-first and bootcamp-style programs',
     link: '/colleges?category=new_age',
   },
+  online: {
+    label: 'Distance / Flexible',
+    icon: '📡',
+    color: 'sky',
+    description: 'Online degrees and flexible entry - study from anywhere',
+    link: '/colleges?category=online',
+  },
 };
-
 const tagCounts = colleges.reduce((accumulator, college) => {
   (college.tags || []).forEach((tag) => {
     accumulator[tag] = (accumulator[tag] || 0) + 1;

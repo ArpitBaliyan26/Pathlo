@@ -230,4 +230,75 @@
     "description": "Entrance exam for design programs at NID.",
     "tags": ["Design", "National", "Undergraduate"]
   }
+,
+  {
+    "id": "ex-012", "name": "VITEEE", "shortName": "VITEEE", "conductingBody": "VIT University",
+    "category": "tech", "difficulty": "Moderate", "field": "Engineering", "frequency": "Once a year",
+    "nextDate": "Apr-May 2025", "registrationDeadline": "Feb 2025", "eligibility": "10+2 with PCM.",
+    "syllabusHighlights": ["Physics","Chemistry","Maths","English","Aptitude"],
+    "totalMarks": 125, "duration": "2 hours 30 minutes", "approxApplicants": "2.5 Lakh+",
+    "officialWebsite": "https://viteee.vit.ac.in", "acceptedBy": ["VIT Vellore","VIT Chennai","VIT Bhopal","VIT AP"],
+    "description": "Entrance exam for VIT University engineering programs across all campuses.",
+    "tags": ["Engineering","Private","Undergraduate"]
+  },
+  {
+    "id": "ex-013", "name": "MHT-CET", "shortName": "MHT-CET", "conductingBody": "Maharashtra State CET Cell",
+    "category": "tech", "difficulty": "Moderate", "field": "Engineering / Pharmacy", "frequency": "Once a year",
+    "nextDate": "Apr-May 2025", "registrationDeadline": "Feb 2025", "eligibility": "10+2 with PCM or PCB.",
+    "syllabusHighlights": ["Physics","Chemistry","Maths / Biology"],
+    "totalMarks": 200, "duration": "3 hours", "approxApplicants": "4 Lakh+",
+    "officialWebsite": "https://cetcell.mahacet.org", "acceptedBy": ["Maharashtra Engineering Colleges","Pharmacy Colleges"],
+    "description": "State-level entrance for engineering and pharmacy admissions in Maharashtra.",
+    "tags": ["Engineering","State","Undergraduate"]
+  },
+  {
+    "id": "ex-014", "name": "WBJEE", "shortName": "WBJEE", "conductingBody": "West Bengal JEEB",
+    "category": "tech", "difficulty": "Moderate", "field": "Engineering", "frequency": "Once a year",
+    "nextDate": "Apr 2025", "registrationDeadline": "Jan 2025", "eligibility": "10+2 with PCM.",
+    "syllabusHighlights": ["Physics","Chemistry","Mathematics"],
+    "totalMarks": 200, "duration": "4 hours", "approxApplicants": "1.2 Lakh+",
+    "officialWebsite": "https://wbjeeb.nic.in", "acceptedBy": ["Jadavpur University","WB Engineering Colleges"],
+    "description": "State entrance for engineering admissions in West Bengal including Jadavpur University.",
+    "tags": ["Engineering","State","Undergraduate"]
+  },
+  {
+    "id": "ex-015", "name": "KCET", "shortName": "KCET", "conductingBody": "Karnataka Examinations Authority",
+    "category": "tech", "difficulty": "Moderate", "field": "Engineering / Medical", "frequency": "Once a year",
+    "nextDate": "Apr 2025", "registrationDeadline": "Feb 2025", "eligibility": "10+2 with PCM or PCB.",
+    "syllabusHighlights": ["Physics","Chemistry","Maths / Biology"],
+    "totalMarks": 180, "duration": "3 hours", "approxApplicants": "2 Lakh+",
+    "officialWebsite": "https://kea.kar.nic.in", "acceptedBy": ["Karnataka Engineering Colleges","PES University","RV College"],
+    "description": "Karnataka state entrance for engineering and medical admissions.",
+    "tags": ["Engineering","State","Undergraduate"]
+  },
+  {
+    "id": "ex-016", "name": "COMED-K", "shortName": "COMED-K", "conductingBody": "COMEDK Consortium Karnataka",
+    "category": "tech", "difficulty": "Moderate", "field": "Engineering / Medical", "frequency": "Once a year",
+    "nextDate": "May 2025", "registrationDeadline": "Mar 2025", "eligibility": "10+2 with PCM or PCB.",
+    "syllabusHighlights": ["Physics","Chemistry","Maths / Biology"],
+    "totalMarks": 180, "duration": "3 hours", "approxApplicants": "0.8 Lakh+",
+    "officialWebsite": "https://www.comedk.org", "acceptedBy": ["Private Engineering Colleges Karnataka","Manipal"],
+    "description": "Private consortium entrance for engineering and medical colleges in Karnataka.",
+    "tags": ["Engineering","Private","Undergraduate"]
+  },
+  {
+    "id": "ex-017", "name": "IPMAT", "shortName": "IPMAT", "conductingBody": "IIM Indore / IIM Rohtak",
+    "category": "business", "difficulty": "Hard", "field": "Management (Integrated)", "frequency": "Once a year",
+    "nextDate": "May 2025", "registrationDeadline": "Mar 2025", "eligibility": "10+2 from any stream.",
+    "syllabusHighlights": ["Quantitative Ability","Verbal Ability","Logical Reasoning"],
+    "totalMarks": 300, "duration": "2 hours", "approxApplicants": "30,000+",
+    "officialWebsite": "https://iimindore.ac.in/ipmat", "acceptedBy": ["IIM Indore IPM","IIM Rohtak IPM","IMNU","TAPMI"],
+    "description": "Gateway to 5-year integrated management programs at IIMs directly after Class 12.",
+    "tags": ["Management","IIM","Undergraduate"]
+  },
+  {
+    "id": "ex-018", "name": "SNAP", "shortName": "SNAP", "conductingBody": "Symbiosis International University",
+    "category": "business", "difficulty": "Moderate", "field": "Management / MBA", "frequency": "Once a year",
+    "nextDate": "Dec 2025", "registrationDeadline": "Nov 2025", "eligibility": "Bachelor degree any discipline.",
+    "syllabusHighlights": ["General English","Analytical and Logical Reasoning","Quantitative"],
+    "totalMarks": 60, "duration": "1 hour", "approxApplicants": "0.6 Lakh+",
+    "officialWebsite": "https://www.snaptest.org", "acceptedBy": ["SIBM Pune","SIIB","SCMHRD","Symbiosis B-Schools"],
+    "description": "Common MBA entrance for all Symbiosis business school programs.",
+    "tags": ["MBA","Management","National","Postgraduate"]
+  }
 ]

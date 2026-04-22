@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Badge, { tagToVariant } from './Badge';
 import { useSavedColleges } from '../../hooks/useSavedColleges';
+
 
 function LocationIcon() {
   return (
@@ -40,8 +42,19 @@ function SaveIcon({ saved }) {
 }
 
 function CardVisual({ image, gradient, type, shortName, name, location }) {
-  if (image) {
-    return <img src={image} alt={name} className="h-36 w-full object-cover" />;
+  const [imgError, setImgError] = useState(false);
+
+  if (image && !imgError) {
+    return (
+      <div className={`h-36 w-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+        <img
+          src={image}
+          alt={name}
+          className="h-20 w-auto max-w-[75%] object-contain drop-shadow-sm"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
   }
 
   return (

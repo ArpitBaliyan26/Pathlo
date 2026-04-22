@@ -14,7 +14,7 @@ const sortOptions = [
 function EmptyState({ onReset }) {
   return (
     <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
-      <div className="mb-4 text-5xl">Search</div>
+      <div className="mb-4 text-5xl">🔍</div>
       <h3 className="mb-1 text-base font-semibold text-slate-800 dark:text-slate-200">
         No colleges match your filters
       </h3>

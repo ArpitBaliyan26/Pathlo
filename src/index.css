@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply bg-[#f8f5f0] dark:bg-[#0f172a] text-slate-800 dark:text-gray-200 font-sans antialiased;
+    @apply bg-[#fdf8f2] dark:bg-[#0f172a] text-slate-800 dark:text-gray-200 font-sans antialiased;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
@@ -38,8 +38,8 @@
   }
 
   .card:hover {
-    @apply shadow-md;
-    transform: translateY(-1px) scale(1.01);
+    @apply shadow-lg border-slate-300 dark:border-slate-600;
+    transform: translateY(-3px) scale(1.015);
   }
 
   /* Primary button */

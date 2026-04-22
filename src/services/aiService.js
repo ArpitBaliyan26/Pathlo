@@ -27,7 +27,7 @@ Rules:
 - Understand typos and informal names (e.g. "Stepen College" → St. Stephen's College)
 - Answer conversationally and warmly
 - Keep answers concise (3–6 lines max unless asked for more)
-- Give honest, realistic answers — no hype or fake claims
+- Give honest, realistic answers \u2013 no hype or fake claims
 - Use simple line breaks. Avoid heavy markdown
 - If the user greets you, greet back and invite a question`;
 

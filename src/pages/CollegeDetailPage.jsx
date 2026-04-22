@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import colleges from '../data/collegeDataset';
 import { getCollegeDetail } from '../data/collegeDetails';
 import exams from '../data/examDataset';
+import { getEnrichedData } from '../data/enrichedData';
 import { generateCollegeInsight } from '../services/aiService';
 import { useSavedColleges } from '../hooks/useSavedColleges';
 
@@ -41,6 +42,23 @@ const ArrowRight = () => (
   </svg>
 );
 
+const PlatformIcon = ({ platform, icon }) => {
+  switch (platform) {
+    case 'youtube':
+      return <svg viewBox="0 0 24 24" fill="#FF0000" width="18" height="18"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>;
+    case 'reddit':
+      return <img src="/reddit.png" alt="Reddit" width="18" height="18" className="object-contain" />;
+    case 'quora':
+      return <img src="/quora.png" alt="Quora" width="18" height="18" className="object-contain" />;
+    case 'maps':
+      return <svg viewBox="0 0 24 24" fill="#34A853" width="18" height="18"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>;
+    case 'google':
+      return <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M23.7449 12.27C23.7449 11.48 23.6749 10.73 23.5549 10H12.2549V14.51H18.7249C18.4349 15.99 17.5849 17.24 16.3249 18.09V21.09H20.1849C22.4449 19.01 23.7449 15.92 23.7449 12.27Z"/><path fill="#34A853" d="M12.2549 24C15.4949 24 18.2049 22.92 20.1849 21.09L16.3249 18.09C15.2449 18.81 13.8749 19.25 12.2549 19.25C9.1249 19.25 6.4749 17.14 5.5249 14.29H1.54492V17.38C3.51492 21.3 7.5649 24 12.2549 24Z"/><path fill="#FBBC05" d="M5.5249 14.29C5.2749 13.57 5.1449 12.8 5.1449 12C5.1449 11.2 5.2849 10.43 5.5249 9.71V6.62H1.54492C0.724922 8.24 0.2549 10.06 0.2549 12C0.2549 13.94 0.724922 15.76 1.54492 17.38L5.5249 14.29Z"/><path fill="#EA4335" d="M12.2549 4.75C14.0249 4.75 15.6049 5.36 16.8549 6.55L20.2749 3.13C18.2049 1.19 15.4949 0 12.2549 0C7.5649 0 3.51492 2.7 1.54492 6.62L5.5249 9.71C6.4749 6.86 9.1249 4.75 12.2549 4.75Z"/></svg>;
+    default:
+      return <span className="text-base leading-none">{icon ?? '🔗'}</span>;
+  }
+};
+
 function Section({ title, icon, children, className = '' }) {
   return (
     <section className={`card p-6 ${className}`}>
@@ -58,33 +76,11 @@ function Section({ title, icon, children, className = '' }) {
 function NotFound() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
-      <div className="mb-4 text-5xl">College</div>
+      <div className="mb-4 text-5xl">🎓</div>
       <h1 className="mb-2 text-2xl font-bold text-slate-800 dark:text-slate-100">College not found</h1>
       <p className="mb-6 text-slate-500 dark:text-slate-400">We could not find a college with that ID.</p>
       <Link to="/colleges" className="btn-primary">Browse all colleges</Link>
     </main>
-  );
-}
-
-function OverviewVisual({ image, gradient, type, shortName, name, location }) {
-  if (image) {
-    return (
-      <img
-        src={image}
-        alt={name}
-        className="h-full min-h-48 w-full object-cover"
-      />
-    );
-  }
-
-  return (
-    <div className={`h-full min-h-48 w-full bg-gradient-to-br ${gradient} p-6 text-white`}>
-      <p className="text-xs uppercase tracking-[0.24em] text-white/70">{type}</p>
-      <div className="mt-8">
-        <p className="text-3xl font-bold leading-tight">{shortName || name.slice(0, 3).toUpperCase()}</p>
-        <p className="mt-2 text-sm text-white/80">{location}</p>
-      </div>
-    </div>
   );
 }
 
@@ -96,7 +92,8 @@ export default function CollegeDetailPage({ user, showToast }) {
   const [expandedExamId, setExpandedExamId] = useState('');
   const fetchedInsightFor = useRef('');
 
-
+  const [insight, setInsight] = useState(null);
+  const [insightLoading, setInsightLoading] = useState(false);
 
   const college = colleges.find((entry) => entry.id === id);
   const detail = getCollegeDetail(id);
@@ -125,38 +122,58 @@ export default function CollegeDetailPage({ user, showToast }) {
     if (!college || fetchedInsightFor.current === id) return;
 
     fetchedInsightFor.current = id;
-    // setInsightLoading(true);
-    // setInsight(null);
+    setInsightLoading(true);
+    setInsight(null);
 
     generateCollegeInsight(college)
-      .then(() => {
-        // setInsight(text);
-        // setInsightLoading(false);
+      .then((text) => {
+        setInsight(text);
+        setInsightLoading(false);
       })
       .catch((error) => {
         console.error('[CollegeDetail] Insight error:', error);
-        // setInsight('AI insight not available right now');
-        // setInsightLoading(false);
+        setInsight('AI insight not available right now. Please try again later.');
+        setInsightLoading(false);
       });
   }, [college, id]);
 
   if (!college) return <NotFound />;
 
-  const { name, location, type, tags, rating, annualFees, avgPackage } = college;
+  const { name, location, type, tags, rating } = college;
+  const enriched = getEnrichedData(id);
+  const annualFees = college.annualFees || enriched.fees;
+  const avgPackage = college.avgPackage || enriched.pkg;
+  const displayAlumni = detail?.alumni?.length > 0 ? detail.alumni : enriched.alumni;
   const gradients = [
-    'from-blue-500 via-indigo-600 to-purple-700',
-    'from-purple-500 via-pink-500 to-rose-600',
-    'from-emerald-500 via-teal-500 to-cyan-600',
-    'from-amber-500 via-orange-500 to-red-500',
-    'from-sky-500 via-blue-500 to-indigo-600',
-    'from-rose-500 via-pink-500 to-fuchsia-600',
+    'from-blue-900/90 via-indigo-900/80 to-purple-900/90',
+    'from-purple-900/90 via-pink-900/80 to-rose-900/90',
+    'from-emerald-900/90 via-teal-900/80 to-cyan-900/90',
+    'from-amber-900/90 via-orange-900/80 to-red-900/90',
+    'from-sky-900/90 via-blue-900/80 to-indigo-900/90',
+    'from-rose-900/90 via-pink-900/80 to-fuchsia-900/90',
+  ];
+  const campusImages = [
+    'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1571260899304-425070110588?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&q=80&w=2000'
   ];
   const gradient = gradients[id.charCodeAt(id.length - 1) % gradients.length];
+  const bgImage = campusImages[id.charCodeAt(id.length - 1) % campusImages.length];
 
   return (
     <main className="pb-16">
-      <div className={`relative overflow-hidden bg-gradient-to-br ${gradient}`}>
-        <div aria-hidden className="absolute inset-0 bg-black/20" />
+      <div className="relative overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${bgImage})` }}
+        />
+        {/* Gradient Overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${gradient} mix-blend-multiply`} />
+        {/* Extra darkening for readability */}
+        <div aria-hidden className="absolute inset-0 bg-black/40" />
 
         <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
           <button
@@ -202,11 +219,30 @@ export default function CollegeDetailPage({ user, showToast }) {
       </div>
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:px-8">
-        {/* ─── Left column ─────────────────────────────────── */}
+        {/* ─── Left column (Main content) ────────────────── */}
         <div className="flex flex-col gap-8 lg:col-span-2">
+          
+          {/* AI Insight */}
+          <Section className="border-brand-200 bg-brand-50/50 dark:border-brand-500/30 dark:bg-brand-500/5">
+            <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-brand-800 dark:text-brand-300">
+              <span className="text-xl">✨</span> AI Insight
+            </h2>
+            {insightLoading ? (
+              <div className="flex animate-pulse flex-col gap-2">
+                <div className="h-4 w-3/4 rounded bg-brand-200 dark:bg-brand-800/50"></div>
+                <div className="h-4 w-full rounded bg-brand-200 dark:bg-brand-800/50"></div>
+                <div className="h-4 w-5/6 rounded bg-brand-200 dark:bg-brand-800/50"></div>
+              </div>
+            ) : (
+              <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                {insight}
+              </p>
+            )}
+          </Section>
+
           {(annualFees || avgPackage) && (
             <Section>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {annualFees && (
                   <div>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Annual Fees</p>
@@ -239,10 +275,82 @@ export default function CollegeDetailPage({ user, showToast }) {
               </ul>
             )}
           </Section>
+
+          {/* ── Research Links (Moved to main column) ── */}
+          {detail?.externalLinks?.length > 0 && (
+            <Section title="Research This College" icon="🔍">
+              <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">
+                Real student perspectives and discussions. Explore YouTube, Reddit, Quora, and Google Reviews to get the full picture.
+              </p>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {detail.externalLinks.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 hover:shadow dark:border-white/[0.08] dark:bg-slate-800/50 dark:text-slate-200 dark:hover:border-brand-500/40 dark:hover:bg-brand-500/10 dark:hover:text-brand-400"
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-800">
+                      <PlatformIcon platform={link.platform} icon={link.icon} />
+                    </div>
+                    <span className="line-clamp-2 leading-snug">{link.label}</span>
+                  </a>
+                ))}
+              </div>
+            </Section>
+          )}
+
         </div>
 
-        {/* ─── Right column ────────────────────────────────── */}
+        {/* ─── Right column (Sidebar) ────────────────────── */}
         <div className="flex flex-col gap-5">
+          <Section title="Quick Actions">
+            <div className="flex flex-col gap-2.5">
+              <div>
+                <button
+                  onClick={() => {
+                    if (!user) {
+                      showToast?.('Log in to save colleges');
+                      return;
+                    }
+                    toggleSave(id);
+                  }}
+                  className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 ${
+                    saved
+                      ? 'bg-brand-600 text-white shadow-brand hover:bg-brand-700'
+                      : 'bg-brand-500 text-white shadow-brand hover:bg-brand-600'
+                  }`}
+                >
+                  <SaveIcon saved={saved} />
+                  {saved ? 'Saved' : 'Save College'}
+                </button>
+              </div>
+
+              {officialWebsite && (
+                <a
+                  href={officialWebsite}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all duration-150 hover:bg-slate-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/[0.04]"
+                >
+                  <LinkIcon />
+                  Official Website
+                </a>
+              )}
+              
+              <a
+                href={`https://www.google.com/maps/search/${encodeURIComponent(college.name + ' ' + college.location)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all duration-150 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 dark:border-white/10 dark:text-slate-300 dark:hover:bg-emerald-500/10 dark:hover:border-emerald-500/30 dark:hover:text-emerald-400"
+              >
+                <PlatformIcon platform="maps" />
+                View on Google Maps
+              </a>
+            </div>
+          </Section>
+
           {collegeExams.length > 0 && (
             <Section title="Entry via Exams">
               <div className="flex flex-col gap-2">
@@ -276,42 +384,25 @@ export default function CollegeDetailPage({ user, showToast }) {
             </Section>
           )}
 
-          <Section title="Quick Actions">
-            <div className="flex flex-col gap-2.5">
-              <div>
-                <button
-                  onClick={() => {
-                    if (!user) {
-                      showToast?.('Log in to save colleges');
-                      return;
-                    }
-                    toggleSave(id);
-                  }}
-                  className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 ${
-                    saved
-                      ? 'bg-brand-600 text-white shadow-brand hover:bg-brand-700'
-                      : 'bg-brand-500 text-white shadow-brand hover:bg-brand-600'
-                  }`}
-                >
-                  <SaveIcon saved={saved} />
-                  {saved ? 'Saved' : 'Save College'}
-                </button>
-
+          {/* ── Notable Alumni ── */}
+          {displayAlumni?.length > 0 && (
+            <Section title="Notable Alumni" icon="🌟">
+              <div className="flex flex-col gap-3">
+                {displayAlumni.map((person) => (
+                  <div key={person.name} className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-base dark:bg-brand-900/30">
+                      {person.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{person.name}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{person.role}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
+            </Section>
+          )}
 
-              {officialWebsite && (
-                <a
-                  href={officialWebsite}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all duration-150 hover:bg-slate-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/[0.04]"
-                >
-                  <LinkIcon />
-                  Official Website
-                </a>
-              )}
-            </div>
-          </Section>
         </div>
       </div>
     </main>
