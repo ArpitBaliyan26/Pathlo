@@ -1,0 +1,32 @@
+{
+  "col-017": {
+    "officialWebsite": true,
+    "placementReport": true,
+    "feePage": true,
+    "nirf": true,
+    "verifiedOn": "2026-04-25",
+    "confidence": "high",
+    "reviewedBy": "Pathlo Admin",
+    "notes": "Source checks completed manually."
+  },
+  "col-057": {
+    "officialWebsite": true,
+    "placementReport": true,
+    "feePage": true,
+    "nirf": true,
+    "verifiedOn": "2026-04-25",
+    "confidence": "high",
+    "reviewedBy": "Pathlo Admin",
+    "notes": "Source checks completed manually."
+  },
+  "col-060": {
+    "officialWebsite": true,
+    "placementReport": true,
+    "feePage": true,
+    "nirf": true,
+    "verifiedOn": "2026-04-25",
+    "confidence": "high",
+    "reviewedBy": "Pathlo Admin",
+    "notes": "Source checks completed manually."
+  }
+}

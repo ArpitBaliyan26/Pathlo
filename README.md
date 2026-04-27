@@ -144,6 +144,62 @@ src/
 
 ---
 
+## ✅ Admin Verification Workflow (JSON Checklist)
+
+Pathlo now supports an admin-style checklist workflow to batch-upgrade colleges from Indicative to Verified safely.
+
+### Checklist file
+
+* [src/data/provenanceChecklist.json](src/data/provenanceChecklist.json)
+
+Each college can be marked verified only after all trusted source checks are complete.
+
+Required checks per college:
+
+* `officialWebsite`
+* `placementReport`
+* `feePage`
+* `nirf`
+* `verifiedOn` (YYYY-MM-DD)
+* `confidence` (`high` / `medium` / `low`)
+
+### Example checklist entry
+
+```json
+"col-017": {
+  "officialWebsite": true,
+  "placementReport": true,
+  "feePage": true,
+  "nirf": true,
+  "verifiedOn": "2026-04-25",
+  "confidence": "high",
+  "reviewedBy": "Pathlo Admin",
+  "notes": "Source checks completed manually."
+}
+```
+
+### How status is computed
+
+* If all required checks are true and metadata is present, provenance auto-marks the college as `Verified`.
+* Otherwise it remains `Indicative`.
+* This logic is implemented in [src/data/provenance.js](src/data/provenance.js).
+
+### Cross-check commands
+
+Run before deploying:
+
+```bash
+npm run build
+```
+
+Optional quality check:
+
+```bash
+npm run lint
+```
+
+---
+
 ## 🚧 Current Status
 
 * Core UI & UX completed

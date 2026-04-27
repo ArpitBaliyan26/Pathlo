@@ -4,6 +4,7 @@ import colleges from '../data/collegeDataset';
 import { getCollegeDetail } from '../data/collegeDetails';
 import exams from '../data/examDataset';
 import { getEnrichedData } from '../data/enrichedData';
+import { getCollegeProvenance, getProvenanceMeta } from '../data/provenance';
 import { generateCollegeInsight } from '../services/aiService';
 import { useSavedColleges } from '../hooks/useSavedColleges';
 import { findCollegeByRouteKey, getCollegeSlug } from '../utils/collegeSlug';
@@ -155,6 +156,12 @@ export default function CollegeDetailPage({ user, showToast }) {
   const enriched = getEnrichedData(collegeId);
   const annualFees = college.annualFees || enriched.fees;
   const avgPackage = college.avgPackage || enriched.pkg;
+  const provenance = getCollegeProvenance(collegeId);
+  const provenanceMeta = getProvenanceMeta(provenance);
+  const isVerified = provenance.status === 'verified';
+  const confidenceLabel = provenance.confidence
+    ? `${provenance.confidence.charAt(0).toUpperCase()}${provenance.confidence.slice(1)} confidence`
+    : null;
   const displayAlumni = detail?.alumni?.length > 0 ? detail.alumni : enriched.alumni;
   const gradients = [
     'from-blue-900/90 via-indigo-900/80 to-purple-900/90',
@@ -254,6 +261,36 @@ export default function CollegeDetailPage({ user, showToast }) {
 
           {(annualFees || avgPackage) && (
             <Section>
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold border ${
+                    isVerified
+                      ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
+                      : 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300'
+                  }`}
+                >
+                  {isVerified ? 'Verified' : 'Indicative'}
+                </span>
+
+                {confidenceLabel && (
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {confidenceLabel}
+                  </span>
+                )}
+
+                {provenance.verifiedOn && (
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    Verified on {provenance.verifiedOn}
+                  </span>
+                )}
+              </div>
+
+              {provenanceMeta.isStale && (
+                <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
+                  Verification is older than {provenanceMeta.staleAfterDays} days. Please re-check official sources.
+                </div>
+              )}
+
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {annualFees && (
                   <div>
@@ -268,6 +305,27 @@ export default function CollegeDetailPage({ user, showToast }) {
                   </div>
                 )}
               </div>
+
+              {provenance.sourceLinks?.length > 0 && (
+                <div className="mt-5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Sources
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {provenance.sourceLinks.map((source) => (
+                      <a
+                        key={`${source.label}-${source.url}`}
+                        href={source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-brand-300 hover:text-brand-700 dark:border-white/10 dark:text-slate-300 dark:hover:border-brand-500/40 dark:hover:text-brand-300"
+                      >
+                        {source.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </Section>
           )}
 

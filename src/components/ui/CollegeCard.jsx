@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Badge, { tagToVariant } from './Badge';
 import { useSavedColleges } from '../../hooks/useSavedColleges';
 import { getCollegeSlug } from '../../utils/collegeSlug';
+import { getCollegeProvenance, getProvenanceMeta } from '../../data/provenance';
 
 
 function LocationIcon() {
@@ -86,6 +87,9 @@ export default function CollegeCard({ college, compact = false, user = null, sho
     avgPackage,
   } = college;
   const collegeSlug = getCollegeSlug(college);
+  const provenance = getCollegeProvenance(id);
+  const provenanceMeta = getProvenanceMeta(provenance);
+  const isVerified = provenance.status === 'verified';
 
   const visibleTags = college.tags?.slice(0, 3) ?? [];
   const courses = college.courses || college.coursesOffered || [];
@@ -170,6 +174,26 @@ export default function CollegeCard({ college, compact = false, user = null, sho
                 <p className="text-slate-500 dark:text-slate-400">Avg. Package</p>
                 <p className="font-semibold text-slate-700 dark:text-slate-200">{avgPackage}</p>
               </div>
+            )}
+          </div>
+        )}
+
+        {(annualFees || avgPackage) && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold border ${
+                isVerified
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300'
+                  : 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300'
+              }`}
+            >
+              {isVerified ? 'Verified' : 'Indicative'}
+            </span>
+
+            {provenanceMeta.isStale && (
+              <span className="inline-flex items-center rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-300">
+                Needs recheck
+              </span>
             )}
           </div>
         )}
