@@ -1,5 +1,5 @@
 /**
- * aiService.js — Pathlo AI Service
+ * aiService.js – Pathlo AI Service
  * 
  * Centralized Groq API integration for:
  * - Chat responses

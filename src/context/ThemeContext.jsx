@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 /**
- * ThemeContext — manages light / dark / system theme.
+ * ThemeContext – manages light / dark / system theme.
  * Uses Tailwind's class-based dark mode (adds/removes `dark` on <html>).
  */
 

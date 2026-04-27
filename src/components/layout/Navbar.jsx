@@ -111,7 +111,7 @@ export default function Navbar({ user }) {
           className="flex items-center gap-2.5 shrink-0 group"
           aria-label="Pathlo Home"
         >
-          {/* Logo mark — user-provided icon */}
+          {/* Logo mark – user-provided icon */}
           <img
             src="/logo.svg"
             alt="Pathlo logo"

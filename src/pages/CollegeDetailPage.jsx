@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import colleges from '../data/collegeDataset';
 import { getCollegeDetail } from '../data/collegeDetails';
 import exams from '../data/examDataset';
 import { getEnrichedData } from '../data/enrichedData';
 import { generateCollegeInsight } from '../services/aiService';
 import { useSavedColleges } from '../hooks/useSavedColleges';
+import { findCollegeByRouteKey, getCollegeSlug } from '../utils/collegeSlug';
 
 const BackIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -55,7 +56,7 @@ const PlatformIcon = ({ platform, icon }) => {
     case 'google':
       return <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M23.7449 12.27C23.7449 11.48 23.6749 10.73 23.5549 10H12.2549V14.51H18.7249C18.4349 15.99 17.5849 17.24 16.3249 18.09V21.09H20.1849C22.4449 19.01 23.7449 15.92 23.7449 12.27Z"/><path fill="#34A853" d="M12.2549 24C15.4949 24 18.2049 22.92 20.1849 21.09L16.3249 18.09C15.2449 18.81 13.8749 19.25 12.2549 19.25C9.1249 19.25 6.4749 17.14 5.5249 14.29H1.54492V17.38C3.51492 21.3 7.5649 24 12.2549 24Z"/><path fill="#FBBC05" d="M5.5249 14.29C5.2749 13.57 5.1449 12.8 5.1449 12C5.1449 11.2 5.2849 10.43 5.5249 9.71V6.62H1.54492C0.724922 8.24 0.2549 10.06 0.2549 12C0.2549 13.94 0.724922 15.76 1.54492 17.38L5.5249 14.29Z"/><path fill="#EA4335" d="M12.2549 4.75C14.0249 4.75 15.6049 5.36 16.8549 6.55L20.2749 3.13C18.2049 1.19 15.4949 0 12.2549 0C7.5649 0 3.51492 2.7 1.54492 6.62L5.5249 9.71C6.4749 6.86 9.1249 4.75 12.2549 4.75Z"/></svg>;
     default:
-      return <span className="text-base leading-none">{icon ?? '🔗'}</span>;
+      return <span className="text-base leading-none">{icon ?? '🔖'}</span>;
   }
 };
 
@@ -85,18 +86,21 @@ function NotFound() {
 }
 
 export default function CollegeDetailPage({ user, showToast }) {
-  const { id } = useParams();
+  const { collegeKey: routeKey } = useParams();
+  const routeLocation = useLocation();
   const navigate = useNavigate();
   const { isCollegeSaved, toggleSave } = useSavedColleges();
-  const saved = isCollegeSaved(id);
   const [expandedExamId, setExpandedExamId] = useState('');
   const fetchedInsightFor = useRef('');
 
   const [insight, setInsight] = useState(null);
   const [insightLoading, setInsightLoading] = useState(false);
 
-  const college = colleges.find((entry) => entry.id === id);
-  const detail = getCollegeDetail(id);
+  const college = findCollegeByRouteKey(colleges, routeKey);
+  const collegeId = college?.id || routeKey;
+  const canonicalSlug = college ? getCollegeSlug(college) : '';
+  const saved = isCollegeSaved(collegeId);
+  const detail = getCollegeDetail(collegeId);
   const officialWebsite = detail?.officialWebsite || college?.officialWebsite || '';
   const collegeExams = (detail?.entryExams || college?.entryExams || []).map((examName) => {
     const normalizedName = examName.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -119,9 +123,17 @@ export default function CollegeDetailPage({ user, showToast }) {
   });
 
   useEffect(() => {
-    if (!college || fetchedInsightFor.current === id) return;
+    if (!college || !canonicalSlug || routeKey === canonicalSlug) return;
 
-    fetchedInsightFor.current = id;
+    navigate(`/colleges/${canonicalSlug}${routeLocation.search}${routeLocation.hash}`, {
+      replace: true,
+    });
+  }, [canonicalSlug, college, navigate, routeKey, routeLocation.hash, routeLocation.search]);
+
+  useEffect(() => {
+    if (!college || fetchedInsightFor.current === collegeId) return;
+
+    fetchedInsightFor.current = collegeId;
     setInsightLoading(true);
     setInsight(null);
 
@@ -135,12 +147,12 @@ export default function CollegeDetailPage({ user, showToast }) {
         setInsight('AI insight not available right now. Please try again later.');
         setInsightLoading(false);
       });
-  }, [college, id]);
+  }, [college, collegeId]);
 
   if (!college) return <NotFound />;
 
   const { name, location, type, tags, rating } = college;
-  const enriched = getEnrichedData(id);
+  const enriched = getEnrichedData(collegeId);
   const annualFees = college.annualFees || enriched.fees;
   const avgPackage = college.avgPackage || enriched.pkg;
   const displayAlumni = detail?.alumni?.length > 0 ? detail.alumni : enriched.alumni;
@@ -159,8 +171,8 @@ export default function CollegeDetailPage({ user, showToast }) {
     'https://images.unsplash.com/photo-1571260899304-425070110588?auto=format&fit=crop&q=80&w=2000',
     'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&q=80&w=2000'
   ];
-  const gradient = gradients[id.charCodeAt(id.length - 1) % gradients.length];
-  const bgImage = campusImages[id.charCodeAt(id.length - 1) % campusImages.length];
+  const gradient = gradients[collegeId.charCodeAt(collegeId.length - 1) % gradients.length];
+  const bgImage = campusImages[collegeId.charCodeAt(collegeId.length - 1) % campusImages.length];
 
   return (
     <main className="pb-16">
@@ -311,10 +323,13 @@ export default function CollegeDetailPage({ user, showToast }) {
                 <button
                   onClick={() => {
                     if (!user) {
-                      showToast?.('Log in to save colleges');
-                      return;
+                      showToast?.(
+                        saved
+                          ? 'Removed from local bookmarks'
+                          : 'Saved locally. Sign in to keep bookmarks across devices.'
+                      );
                     }
-                    toggleSave(id);
+                    toggleSave(collegeId);
                   }}
                   className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 ${
                     saved

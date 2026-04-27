@@ -103,7 +103,7 @@ Pathlo focuses on:
 
 ---
 
-## 🗂️ Project Structure
+## 🖂️ Project Structure
 
 ```
 src/
@@ -140,7 +140,7 @@ src/
 
 * Fees & placements may be indicative ranges
 * Always verify from official sources
-* This is Version 1 — dataset is being improved continuously
+* This is Version 1 – dataset is being improved continuously
 
 ---
 

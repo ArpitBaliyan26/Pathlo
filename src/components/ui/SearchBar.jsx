@@ -1,10 +1,10 @@
 /**
- * SearchBar — reusable search input for colleges / exams.
+ * SearchBar – reusable search input for colleges / exams.
  * Props:
- *   value       string   — controlled input value
- *   onChange    fn       — (value: string) => void
- *   placeholder string   — input placeholder text
- *   className   string   — extra wrapper classes
+ *   value       string   – controlled input value
+ *   onChange    fn       – (value: string) => void
+ *   placeholder string   – input placeholder text
+ *   className   string   – extra wrapper classes
  */
 
 function SearchIcon() {
@@ -42,7 +42,7 @@ export default function SearchBar({
 }) {
   return (
     <div className={`relative flex items-center ${className}`}>
-      {/* Search icon — left */}
+      {/* Search icon – left */}
       <span className="absolute left-3.5 pointer-events-none">
         <SearchIcon />
       </span>
@@ -65,7 +65,7 @@ export default function SearchBar({
                    transition-all duration-150"
       />
 
-      {/* Clear button — right */}
+      {/* Clear button – right */}
       {value && (
         <button
           onClick={() => onChange?.('')}

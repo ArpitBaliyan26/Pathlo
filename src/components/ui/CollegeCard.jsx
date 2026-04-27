@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Badge, { tagToVariant } from './Badge';
 import { useSavedColleges } from '../../hooks/useSavedColleges';
+import { getCollegeSlug } from '../../utils/collegeSlug';
 
 
 function LocationIcon() {
@@ -84,6 +85,7 @@ export default function CollegeCard({ college, compact = false, user = null, sho
     annualFees,
     avgPackage,
   } = college;
+  const collegeSlug = getCollegeSlug(college);
 
   const visibleTags = college.tags?.slice(0, 3) ?? [];
   const courses = college.courses || college.coursesOffered || [];
@@ -101,17 +103,18 @@ export default function CollegeCard({ college, compact = false, user = null, sho
   const handleSave = (event) => {
     event.preventDefault();
     event.stopPropagation();
-
     if (!user) {
-      showToast?.('Log in to save colleges');
-      return;
+      showToast?.(
+        saved
+          ? 'Removed from local bookmarks'
+          : 'Saved locally. Sign in to keep bookmarks across devices.'
+      );
     }
-
     toggleSave(id);
   };
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md dark:border-slate-700 dark:bg-[#1e293b]">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md dark:border-slate-700 dark:bg-[#1e293b] dark:hover:border-slate-600">
       <div className="px-4 pt-4">
         <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/30">
           <button
@@ -201,7 +204,7 @@ export default function CollegeCard({ college, compact = false, user = null, sho
         )}
 
         <Link
-          to={`/colleges/${id}`}
+          to={`/colleges/${collegeSlug}`}
           className="group/link mt-1 flex w-full items-center justify-between text-xs font-semibold text-brand-600 transition-colors duration-150 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
         >
           View Details

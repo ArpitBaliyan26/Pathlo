@@ -1,5 +1,5 @@
 /**
- * FilterBar — horizontal scrollable chip filter row.
+ * FilterBar – horizontal scrollable chip filter row.
  *
  * Props:
  *   groups    Array<{ id, label, options: Array<{value, label, icon?}> }>

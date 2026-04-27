@@ -7,7 +7,7 @@ export default function ScrollToTop() {
   useEffect(() => {
     // Only scroll to top on fresh navigation, not back/forward
     if (state?.scrollTop !== false) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [pathname, state]);
 

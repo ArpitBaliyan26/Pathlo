@@ -3,6 +3,7 @@ import SearchBar from '../components/ui/SearchBar';
 import FilterBar from '../components/ui/FilterBar';
 import ExamCard from '../components/ui/ExamCard';
 import { exams, difficultyOptions, examCategories } from '../data/examDataset';
+import { useSavedExams } from '../hooks/useSavedExams';
 
 /* ─── Filter groups ──────────────────────────────────────────── */
 const filterGroups = [
@@ -43,6 +44,7 @@ function EmptyState({ onReset }) {
 export default function ExamExplorerPage() {
   const [search, setSearch] = useState('');
   const [active, setActive] = useState({});
+  const { isExamSaved, toggleExamSave } = useSavedExams();
 
   const handleFilter = (groupId, value) => {
     setActive((prev) => ({ ...prev, [groupId]: value }));
@@ -135,7 +137,14 @@ export default function ExamExplorerPage() {
       {/* ── Cards Masonry Layout ─────────────────────────────── */}
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-5">
         {results.length > 0
-          ? results.map((exam) => <ExamCard key={exam.id} exam={exam} />)
+          ? results.map((exam) => (
+            <ExamCard
+              key={exam.id}
+              exam={exam}
+              saved={isExamSaved(exam.id)}
+              onToggleSave={toggleExamSave}
+            />
+          ))
           : <EmptyState onReset={resetAll} />
         }
       </div>

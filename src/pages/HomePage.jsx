@@ -92,8 +92,7 @@ export default function HomePage({ user, showToast }) {
 
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-500 dark:text-slate-400
                          leading-relaxed mb-8 text-balance">
-            Pathlo is a discovery platform, not a ranking site.
-            Explore modern career paths in business, tech, and liberal arts.
+            Not sure where to start? Browse all colleges, apply filters by field or type, and learn what each path actually looks like – beyond the rankings.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -139,7 +138,7 @@ export default function HomePage({ user, showToast }) {
         <SectionHeader
           eyebrow="✦ Colleges"
           title="Explore colleges across different fields and paths"
-          subtitle="Browse colleges by interest, location, and study path. Verified source data will continue to grow here."
+          subtitle=""
           action={{ label: 'View all', href: '/colleges' }}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -150,7 +149,7 @@ export default function HomePage({ user, showToast }) {
       </section>
 
       {/* ════════════════════════════════════════════════
-          EXPLORE BY CATEGORY — single blue box
+          EXPLORE BY CATEGORY – single blue box
           ════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <div className="relative overflow-hidden rounded-2xl
@@ -244,7 +243,7 @@ export default function HomePage({ user, showToast }) {
 
               <div className="flex flex-wrap gap-1.5">
                 <span className={`badge ${exam.difficulty === 'Hard' ? 'text-red-500 bg-red-50 dark:bg-red-500/10' : exam.difficulty === 'Moderate' ? 'text-amber-500 bg-amber-50 dark:bg-amber-500/10' : 'text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10'} font-semibold`}>
-                  ● {exam.difficulty}
+                  ▏ {exam.difficulty}
                 </span>
                 <span className="badge bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300">{exam.field}</span>
                 <span className="badge bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300 text-[10px]">

@@ -136,28 +136,30 @@ function buildHighlights(college) {
 /* ─── Generate research links for ANY college ──────────────────── */
 function generateResearchLinks(college) {
   const q = encodeURIComponent(college.name);
+  const campusQ = encodeURIComponent(`${college.name} campus`);
+  const googleReviewsQ = encodeURIComponent(`${college.name} google reviews`);
+  const redditQ = encodeURIComponent(`site:reddit.com ${college.name}`);
   const nameShort = college.shortName || college.name;
   return [
     {
       platform: 'youtube',
-      label: `${nameShort} – Campus Review on YouTube`,
-      url: `https://www.youtube.com/results?search_query=${encodeURIComponent(college.name + ' review campus life students')}`
+      label: `${nameShort} – YouTube Campus Search`,
+      url: `https://www.youtube.com/results?search_query=${campusQ}`
+    },
+    {
+      platform: 'google',
+      label: `Google Reviews – ${nameShort}`,
+      url: `https://www.google.com/search?q=${googleReviewsQ}`
     },
     {
       platform: 'reddit',
-      label: `Reddit: ${nameShort} – Student Experiences`,
-      url: `https://www.reddit.com/search/?q=${q}&type=link`
+      label: `Reddit – ${nameShort} Discussions`,
+      url: `https://www.google.com/search?q=${redditQ}`
     },
     {
       platform: 'quora',
       label: `Quora: Is ${nameShort} worth it?`,
       url: `https://www.quora.com/search?q=${q}`
-    },
-
-    {
-      platform: 'google',
-      label: `Google Reviews – ${nameShort}`,
-      url: `https://www.google.com/search?q=${encodeURIComponent(college.name + ' reviews students experience')}`
     },
   ];
 }
@@ -165,10 +167,8 @@ function generateResearchLinks(college) {
 function buildDetail(college) {
   const override = detailOverrides[college.id] || {};
 
-  // Use manual override links if available; otherwise auto-generate for every college
-  const externalLinks = override.externalLinks?.length > 0
-    ? override.externalLinks
-    : generateResearchLinks(college);
+  // Keep a consistent 4-button research set for every college.
+  const externalLinks = generateResearchLinks(college);
 
   return {
     officialWebsite: college.officialWebsite || null,
@@ -178,7 +178,7 @@ function buildDetail(college) {
     highlights: override.highlights || buildHighlights(college),
     reviews: [],
     alumni: override.alumni || [],
-    externalLinks: generateResearchLinks(college),
+    externalLinks,
   };
 }
 

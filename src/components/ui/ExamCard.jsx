@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSavedExams } from '../../hooks/useSavedExams';
 
 /* ─── Difficulty config ──────────────────────────────────────── */
 const diffConfig = {
@@ -121,9 +122,17 @@ function ExamDetail({ exam }) {
 }
 
 /* ─── Main Exam Card ─────────────────────────────────────────── */
-export default function ExamCard({ exam }) {
+export default function ExamCard({ exam, saved: savedProp, onToggleSave }) {
   const [expanded, setExpanded] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const { isExamSaved, toggleExamSave } = useSavedExams();
+  const saved = typeof savedProp === 'boolean' ? savedProp : isExamSaved(exam.id);
+  const handleToggleSave = () => {
+    if (onToggleSave) {
+      onToggleSave(exam.id);
+      return;
+    }
+    toggleExamSave(exam.id);
+  };
   const diff = diffConfig[exam.difficulty] || diffConfig.Moderate;
 
   return (
@@ -154,7 +163,7 @@ export default function ExamCard({ exam }) {
               </div>
               {/* Save button */}
               <button
-                onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
+                onClick={(e) => { e.stopPropagation(); handleToggleSave(); }}
                 aria-label={saved ? 'Unsave exam' : 'Save exam'}
                 className={`shrink-0 w-8 h-8 rounded-lg border flex items-center justify-center
                             transition-all duration-150

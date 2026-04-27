@@ -87,7 +87,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<HomePage user={user} showToast={showToast} />} />
               <Route path="/colleges" element={<CollegesPage user={user} showToast={showToast} />} />
-              <Route path="/colleges/:id" element={<CollegeDetailPage user={user} showToast={showToast} />} />
+              <Route path="/colleges/:collegeKey" element={<CollegeDetailPage user={user} showToast={showToast} />} />
               <Route path="/exam-explorer" element={<ExamExplorerPage />} />
               <Route path="/dashboard" element={<DashboardPage user={user} showToast={showToast} />} />
               <Route path="/auth" element={<AuthPage user={user} />} />
